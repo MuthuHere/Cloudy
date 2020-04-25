@@ -118,7 +118,8 @@ class HomeProvider extends BaseProvider {
 
   void otherCityOnClicked() async {
     final result = await Navigator.pushNamed(context, ROUTE_SELECT_CITY);
-
-    filterBy(result);
+    if (result != null) {
+      filterBy(result);
+    }
   }
 }
