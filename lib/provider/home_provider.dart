@@ -9,6 +9,7 @@ import 'package:weatherapp/route/routes_constants.dart';
 import 'package:weatherapp/storage/app_preferance.dart';
 import 'package:weatherapp/utils/city_constants.dart';
 import 'package:weatherapp/utils/string_constants.dart';
+import '../utils/toast_message.dart' as AppMessage;
 
 ///[HomeProvider] is handling all business logic and details
 class HomeProvider extends BaseProvider {
@@ -115,9 +116,9 @@ class HomeProvider extends BaseProvider {
     print(jsonResult.toString());
   }
 
-  void otherCityOnClicked() {
-    Navigator.pushNamed(context, ROUTE_SELECT_CITY).whenComplete(() {
-      getUserLocation();
-    });
+  void otherCityOnClicked() async {
+    final result = await Navigator.pushNamed(context, ROUTE_SELECT_CITY);
+
+    filterBy(result);
   }
 }

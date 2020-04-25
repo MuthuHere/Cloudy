@@ -3,9 +3,10 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 import 'package:weatherapp/data/fav_city.dart';
 import 'package:weatherapp/provider/city_selection_provider.dart';
-import 'package:weatherapp/ui/citysecection/city_body_widget.dart';
+import 'package:weatherapp/ui/citysecection/city_selection_body_widget.dart';
 import 'package:weatherapp/ui/widgets/app_text.dart';
 import 'package:weatherapp/utils/string_constants.dart';
+import 'package:weatherapp/utils/toast_message.dart';
 
 class CitySelectionPage extends StatefulWidget {
   @override
@@ -54,12 +55,16 @@ class _CitySelectionPageState extends State<CitySelectionPage> {
 class SearchCityDelegate extends SearchDelegate {
   final CitySelectionProvider provider;
   List<FavCity> searchCityList = [];
+  List<FavCity> favList = [];
 
   SearchCityDelegate(this.provider) {
+    ///sorting
     final keyList = provider.favCityBox.keys.toList();
     keyList.forEach((key) {
       searchCityList.add(provider.favCityBox.get(key));
     });
+    searchCityList.sort(
+        (a, b) => b.isFavourite.toString().compareTo(a.isFavourite.toString()));
   }
 
   @override
@@ -116,6 +121,9 @@ class SearchCityDelegate extends SearchDelegate {
             title: Text(_tempList[position].city),
             trailing: IconButton(
               onPressed: () {
+                AppMessage.toast(favCity.isFavourite
+                    ? "Favourite removed"
+                    : "Favourite added");
                 favCity.isFavourite = !favCity.isFavourite;
                 provider.addToHive(favCity);
                 close(context, null);

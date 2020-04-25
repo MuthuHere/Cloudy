@@ -13,19 +13,25 @@ class CityBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var searchCityList = [];
     return ValueListenableBuilder(
       valueListenable: provider.favCityBox.listenable(),
       builder: (BuildContext context, Box<FavCity> allCities, Widget child) {
+        ///sorting
+        final keyList = provider.favCityBox.keys.toList();
+        keyList.forEach((key) {
+          searchCityList.add(provider.favCityBox.get(key));
+        });
+        searchCityList.sort((a, b) =>
+            b.isFavourite.toString().compareTo(a.isFavourite.toString()));
+
         return ListView.separated(
           itemBuilder: (context, position) {
-            final key = allCities.keys.toList()[position];
-            FavCity value = allCities.get(key);
+            FavCity value = searchCityList[position];
             return ListTile(
               title: Text(value.city),
               onTap: () {
-                Navigator.pop(
-                  context,
-                );
+                Navigator.pop(context, value.city);
               },
               trailing: IconButton(
                 onPressed: () {

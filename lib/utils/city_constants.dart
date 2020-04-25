@@ -4,7 +4,7 @@ class CityList {
     'Kuala Lumpur',
     'George Town',
     'Johor Bahru',
-    'Use my location',
     'Select city',
+    'Use my location',
   ];
 }

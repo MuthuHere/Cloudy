@@ -49,9 +49,9 @@ class HomeWidget {
             _menuItemBuilder(
                 CityList.cityList[2], LocationMenu.LOCATION_JOHAR_BAHRU),
             _menuItemBuilder(
-                CityList.cityList[3], LocationMenu.LOCATION_USE_CURRENT),
+                CityList.cityList[3], LocationMenu.LOCATION_ALL_CITY),
             _menuItemBuilder(
-                CityList.cityList[4], LocationMenu.LOCATION_ALL_CITY)
+                CityList.cityList[4], LocationMenu.LOCATION_USE_CURRENT),
           ],
         )
       ],
@@ -275,11 +275,13 @@ class HomeWidget {
       case LocationMenu.LOCATION_JOHAR_BAHRU:
         homeProvider.filterBy(CityList.cityList[2]);
         break;
-      case LocationMenu.LOCATION_USE_CURRENT:
-        homeProvider.getUserLocation();
-        break;
+
       case LocationMenu.LOCATION_ALL_CITY:
         homeProvider.otherCityOnClicked();
+        break;
+
+      case LocationMenu.LOCATION_USE_CURRENT:
+        homeProvider.getUserLocation();
         break;
     }
   }
