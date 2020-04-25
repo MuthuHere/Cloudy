@@ -49,7 +49,9 @@ class HomeWidget {
             _menuItemBuilder(
                 CityList.cityList[2], LocationMenu.LOCATION_JOHAR_BAHRU),
             _menuItemBuilder(
-                CityList.cityList[3], LocationMenu.LOCATION_USE_CURRENT)
+                CityList.cityList[3], LocationMenu.LOCATION_USE_CURRENT),
+            _menuItemBuilder(
+                CityList.cityList[4], LocationMenu.LOCATION_ALL_CITY)
           ],
         )
       ],
@@ -276,6 +278,9 @@ class HomeWidget {
       case LocationMenu.LOCATION_USE_CURRENT:
         homeProvider.getUserLocation();
         break;
+      case LocationMenu.LOCATION_ALL_CITY:
+        homeProvider.otherCityOnClicked();
+        break;
     }
   }
 
@@ -296,5 +301,6 @@ enum LocationMenu {
   LOCATION_KUALA_LUMPUR,
   LOCATION_GEORGE_TOWN,
   LOCATION_JOHAR_BAHRU,
-  LOCATION_USE_CURRENT
+  LOCATION_USE_CURRENT,
+  LOCATION_ALL_CITY
 }

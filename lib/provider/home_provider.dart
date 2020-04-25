@@ -1,36 +1,47 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weatherapp/base/base_provider.dart';
 import 'package:weatherapp/data/weather_response.dart';
 import 'package:weatherapp/network/api_repository.dart';
+import 'package:weatherapp/route/routes_constants.dart';
+import 'package:weatherapp/storage/app_preferance.dart';
 import 'package:weatherapp/utils/city_constants.dart';
+import 'package:weatherapp/utils/string_constants.dart';
 
 ///[HomeProvider] is handling all business logic and details
 class HomeProvider extends BaseProvider {
   final _repository = ApiRepository();
+  final BuildContext context;
   WeatherDetails _weatherResponse;
   List<WeatherDetails> _forecastWeatherResponse;
   String _searchCity;
 
-  ///constructor
-  HomeProvider() {
+  ///:::::::::::::: CONSTRUCTOR ::::::::::::::
+  HomeProvider(this.context) {
     filterBy(CityList.cityList[0]);
+
+    ///init pref
+    AppPref.appPref();
+    loadJson(context);
   }
 
-  ///::::::::::::::api ==> https://api.openweathermap.org/data/2.5/::::::::::::::
+  ///::::::::::::::API ==> https://api.openweathermap.org/data/2.5/::::::::::::::
   Future<void> getCurrentWeather(String city) async {
     super.isLoading = true;
     WeatherDetails response;
     response = await _repository.getCurrentWeather(city);
     super.isLoading = false;
     if (response != null) {
-      //update meter
+      //update data
       weatherResponse = response;
     } else {
       weatherResponse = null;
     }
   }
 
-  ///::::::::::::::api ==> https://api.openweathermap.org/data/2.5/::::::::::::::
+  ///::::::::::::::API ==> https://api.openweathermap.org/data/2.5/::::::::::::::
   Future<void> getForecastWeather(String city) async {
     super.isLoading = true;
     List<WeatherDetails> response;
@@ -43,15 +54,16 @@ class HomeProvider extends BaseProvider {
     }
   }
 
-  ///::::::::::::::filter based on city selection::::::::::::::
+  ///::::::::::::::FILTER BASED ON CITY SELECTION ::::::::::::::
   void filterBy(String searchCity) {
     this.searchCity = searchCity;
     getCurrentWeather(searchCity);
     getForecastWeather(searchCity);
   }
 
-  ///::::::::::::::Getting user current location ::::::::::::::
+  ///::::::::::::::GETTING USER CURRENT LOCATION ::::::::::::::
   getUserLocation() async {
+    super.isLoading = true;
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     if (position != null) {
@@ -59,7 +71,7 @@ class HomeProvider extends BaseProvider {
     }
   }
 
-  ///::::::::::::::filter based on user current location ::::::::::::::
+  ///::::::::::::::FILTER BASED ON USER CURRENT LOCATION ::::::::::::::
   Future<void> getWeatherByLocation(Position position) async {
     super.isLoading = true;
     WeatherDetails response;
@@ -73,7 +85,7 @@ class HomeProvider extends BaseProvider {
     }
   }
 
-  ///::::::::::::::Encapsulation variables::::::::::::::
+  ///::::::::::::::ENCAPSULATION VARIABLES::::::::::::::
   WeatherDetails get weatherResponse => _weatherResponse;
 
   set weatherResponse(WeatherDetails value) {
@@ -93,5 +105,19 @@ class HomeProvider extends BaseProvider {
   set searchCity(String value) {
     _searchCity = value;
     notifyListeners();
+  }
+
+  ///LOAD JSON LIST FROM ASSET
+  void loadJson(BuildContext context) async {
+    String data = await DefaultAssetBundle.of(context)
+        .loadString(JSON_CITIES_IN_MALAYSIA);
+    final jsonResult = json.decode(data);
+    print(jsonResult.toString());
+  }
+
+  void otherCityOnClicked() {
+    Navigator.pushNamed(context, ROUTE_SELECT_CITY).whenComplete(() {
+      getUserLocation();
+    });
   }
 }

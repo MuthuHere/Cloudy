@@ -26,6 +26,14 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('../cert/cloudy.jks')
+            storePassword 'Cloudy#123'
+            keyPassword 'Cloudy#123'
+            keyAlias = 'Cloudy'
+        }
+    }
     compileSdkVersion 29
 
     sourceSets {

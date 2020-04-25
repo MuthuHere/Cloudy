@@ -5,5 +5,6 @@ class CityList {
     'George Town',
     'Johor Bahru',
     'Use my location',
+    'Select city',
   ];
 }

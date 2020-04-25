@@ -11,21 +11,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeWidget _homeWidgetBrain;
+  HomeWidget _homeWidget;
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HomeProvider>(
-      create: (BuildContext context) => HomeProvider(),
+      create: (BuildContext context) => HomeProvider(context),
       child: Consumer<HomeProvider>(
         builder:
             (BuildContext context, HomeProvider homeProvider, Widget child) {
-          _homeWidgetBrain = HomeWidget(homeProvider,context);
+              _homeWidget = HomeWidget(homeProvider,context);
           return ModalProgressHUD(
             inAsyncCall: homeProvider.isLoading,
             child: Scaffold(
-              appBar: _homeWidgetBrain.appBar(),
-              body: _homeWidgetBrain.homeBody(),
+              appBar: _homeWidget.appBar(),
+              body: _homeWidget.homeBody(),
             ),
           );
         },
