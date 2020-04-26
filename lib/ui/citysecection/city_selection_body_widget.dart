@@ -22,12 +22,12 @@ class CityBody extends StatelessWidget {
         keyList.forEach((key) {
           searchCityList.add(provider.favCityBox.get(key));
         });
-        searchCityList.sort((a, b) =>
-            b.isFavourite.toString().compareTo(a.isFavourite.toString()));
-
+        var sortedList = [];
+        sortedList =
+            searchCityList.where((cities) => cities.isFavourite).toList();
         return ListView.separated(
           itemBuilder: (context, position) {
-            FavCity value = searchCityList[position];
+            FavCity value = sortedList[position];
             return ListTile(
               title: Text(value.city),
               onTap: () {
@@ -45,7 +45,7 @@ class CityBody extends StatelessWidget {
               ),
             );
           },
-          itemCount: allCities.keys.toList().length,
+          itemCount: sortedList.length,
           separatorBuilder: (_, index) => Divider(
             height: 2,
           ),
