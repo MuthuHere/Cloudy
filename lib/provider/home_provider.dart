@@ -8,6 +8,7 @@ import 'package:weatherapp/network/api_repository.dart';
 import 'package:weatherapp/route/routes_constants.dart';
 import 'package:weatherapp/utils/city_constants.dart';
 import 'package:weatherapp/utils/string_constants.dart';
+import 'package:weatherapp/utils/toast_message.dart';
 
 ///[HomeProvider] is handling all business logic and details
 class HomeProvider extends BaseProvider {
@@ -64,6 +65,9 @@ class HomeProvider extends BaseProvider {
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     if (position != null) {
       getWeatherByLocation(position);
+    } else {
+      AppMessage.toast('Permission Denied!!');
+      super.isLoading = false;
     }
   }
 
