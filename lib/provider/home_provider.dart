@@ -6,10 +6,8 @@ import 'package:weatherapp/base/base_provider.dart';
 import 'package:weatherapp/data/weather_response.dart';
 import 'package:weatherapp/network/api_repository.dart';
 import 'package:weatherapp/route/routes_constants.dart';
-import 'package:weatherapp/storage/app_preferance.dart';
 import 'package:weatherapp/utils/city_constants.dart';
 import 'package:weatherapp/utils/string_constants.dart';
-import '../utils/toast_message.dart' as AppMessage;
 
 ///[HomeProvider] is handling all business logic and details
 class HomeProvider extends BaseProvider {
@@ -22,9 +20,6 @@ class HomeProvider extends BaseProvider {
   ///:::::::::::::: CONSTRUCTOR ::::::::::::::
   HomeProvider(this.context) {
     filterBy(CityList.cityList[0]);
-
-    ///init pref
-    AppPref.appPref();
     loadJson(context);
   }
 
